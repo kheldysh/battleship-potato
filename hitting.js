@@ -91,7 +91,7 @@ var nextClockwiseCoord = function(currentCoord, statusGrid) {
 
 // TODO check proper status
 var isUnusedCoord = function(x, y, statusGrid) {
-    return statusGrid[x][y] === 'UNKNOWN';
+    return statusGrid === null || statusGrid[x][y] === 'UNKNOWN';
 };
 
 var isWithinGrid = function(x, y) {
