@@ -4,6 +4,15 @@ var app = express();
 
 var grid;
 var row = [null, null, null, null, null];
+function initShootingHistory() {
+    var a = new Array(10);
+    for (var i = 0; i < 10; i++) {
+        a[i] = new Array(10).fill(NaN);
+    }
+    return a;
+}
+var shootingHistory = initShootingHistory();
+
 var initialGrid = [].concat(row).map(function() {
     return [].concat(row);
 });
