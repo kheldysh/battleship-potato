@@ -18,8 +18,8 @@
             border: 1px solid white;
             color: white;
             border-collapse: collapse;
-            height: 40px;
-            width: 40px;
+            height: 50px;
+            width: 50px;
             text-align: center;
 
         }
@@ -34,32 +34,85 @@
 <div id="root"></div>
 
 <script type="text/babel">
+    const MI = 0;
+    const HI = 1;
+    const NU = '';
+    const CA = 2;
+    const BA = 3;
+    const CR = 4;
+    const SU = 5;
+    const DE = 6;
+
+    const shipNames = {
+        2: 'Carrier',
+        3: 'Battleship',
+        4: 'Cruiser',
+        5: 'Submarine',
+        6: 'Destroyer',
+    };
+
     class List extends React.Component {
         constructor(props) {
             super(props);
+
+            const playerGrid = [
+                [CA, CA, NU, BA, BA, BA, NU, NU, NU, NU],
+                [NU, NU, NU, NU, NU, NU, NU, NU, NU, NU],
+                [CR, NU, NU, NU, NU, NU, NU, NU, NU, NU],
+                [CR, NU, NU, NU, NU, NU, NU, NU, NU, NU],
+                [CR, NU, NU, NU, NU, NU, NU, NU, NU, NU],
+                [NU, NU, NU, SU, SU, SU, NU, NU, NU, NU],
+                [NU, NU, NU, NU, NU, NU, NU, NU, NU, NU],
+                [NU, NU, NU, NU, NU, NU, NU, NU, NU, NU],
+                [NU, NU, NU, NU, NU, NU, NU, NU, NU, DE],
+                [NU, NU, NU, NU, NU, NU, NU, NU, NU, DE]
+            ];
+
             this.state = {
-//                items: [1, 2, 3]
-                grid: []
+                enemyGrid: [],
+                playerGrid
             };
         }
 
         componentDidMount() {
-            window.superagent.get('http://localhost:3000/start_game').end((err, res) => {
+            superagent.get('http://localhost:3000/start_game').end((err, res) => {
                 const response = JSON.parse(res.text);
-//                console.log(JSON.parse(res.text));
                 this.setState({
-                   grid: response.grid
+                   enemyGrid: response.grid
                 });
             });
+
+            setTimeout(function() {
+                superagent.put('http://localhost:3000/next_turn')
+                    .set('Content-Type', 'application/json')
+                    .send(JSON.stringify({
+                        "report": {
+                            "turn": 94,
+                            "you": {
+                                "target": {
+                                    "x": 9,
+                                    "y": 8
+                                },
+                                "event": "SUNK",
+                                "ship": "5",
+                                "message": "You sunk an enemy Destroyer!"
+                            },
+                            "enemy":{
+                                "target":{
+                                    "x":1,
+                                    "y":8
+                                },
+                                "event": "MISS",
+                                "ship": null,
+                                "message":"Enemy missed!"
+                            }
+                        }
+                    }));
+            }, 1000);
         }
 
-        handleClick() {
-            this.setState({
-                items: [...this.state.items, this.state.items.length + 1]
-            });
-        }
         render() {
-            if (!this.state.grid) return null;
+            if (!this.state.enemyGrid) return null;
 
             return (
                 <div>
@@ -67,7 +120,7 @@
                         Enemy field
                         <table>
                             <tbody>
-                            {this.state.grid.map((row, index) =>
+                            {this.state.enemyGrid.map((row, index) =>
                                     <tr key={index}>
                                         {row.map((cell, cellIndex) =>
                                                 <td key={`${index}-${cellIndex}`}>
@@ -84,11 +137,11 @@
                         Player field
                         <table>
                             <tbody>
-                            {this.state.grid.map((row, index) =>
+                            {this.state.playerGrid.map((row, index) =>
                                     <tr key={index}>
                                         {row.map((cell, cellIndex) =>
                                                 <td key={`${index}-${cellIndex}`}>
-                                                    {cell}
+                                                    {shipNames[cell] || cell}
                                                 </td>
                                         )}
                                     </tr>

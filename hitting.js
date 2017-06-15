@@ -1,4 +1,4 @@
-require('randomizer');
+require('./randomizer');
 
 /*
 1. random shot
@@ -44,7 +44,7 @@ var nextMove = function(previousMove, grid, strategy) {
             return getRandomCoord();
             break;
         case 'HIT':
-            if (strategy.currentHits.empty()) {
+            if (strategy.currentHits.length === 0) {
                 strategy.currentHits.push(previousMove.target);
                 return nextClockwiseCoord(previousMove.target, grid);
             } else {
@@ -96,4 +96,8 @@ var isUnusedCoord = function(x, y, statusGrid) {
 
 var isWithinGrid = function(x, y) {
     return x >= 0 && x <= 9 && y >= 0 && y <= 9;
-}
+};
+
+module.exports = {
+    nextMove: nextMove
+};

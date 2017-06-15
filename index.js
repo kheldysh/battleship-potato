@@ -1,9 +1,9 @@
-require('hitting');
 var express = require('express');
 var range = require('lodash/range');
+var hitting = require('./hitting');
 var app = express();
 
-app.use('/', express.static(__dirname + '/index.html'));
+app.use('/index.html', express.static(__dirname + '/index.html'));
 
 // function initShootingHistory() {
 //     var a = new Array(10);
@@ -23,7 +23,7 @@ var enemyGrid;
 var MI = 0;
 var HI = 1;
 
-var NU = null;
+var NU = '';
 
 var CA = 2;
 var BA = 3;
@@ -84,8 +84,9 @@ app.get('/start_game', function (req, res) {
 app.put('/next_turn', function (req, res) {
 
     var ourPrevMove = req.report.you;
-    var enemyMove = req.report.enemy;
-    var nextMove = nextMove(ourPrevMove); res.json(nextMove);
+    // var enemyMove = req.report.enemy;
+    var nextMove = hitting.nextMove(ourPrevMove);
+    res.json(nextMove);
 });
 
 app.delete('/end_game', function (req, res) {
