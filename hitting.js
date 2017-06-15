@@ -11,8 +11,6 @@ require('randomizer');
 
  */
 
-// var enemyGrid = [_.range(0,9).map(function() { return [] })];
-
 // X = columns
 // Y = rows
 
@@ -41,16 +39,21 @@ var nextMove = function(previousMove, grid) {
 };
 
 // from currentCoord, return next available neighboring coordinate clockwise, starting from top
-var nextClockwiseCoord = function(currentCoord) {
+var nextClockwiseCoord = function(currentCoord, statusGrid) {
     var currX = currentCoord.x;
     var currY = currentCoord.y;
-    if (currY > 0) {
+    if (currY > 0 && isUnusedCoord(currX, currY-1)) {
         return { x: currX, y: currY-1 }
-    } else if (currX < 9) {
+    } else if (currX < 9 && isUnusedCoord(currX+1, currY)) {
         return { x: currX+1, y: currY }
-    } else if (currY < 9) {
+    } else if (currY < 9 && isUnusedCoord(currX, currY+1)) {
         return { x: currX, y: currY+1 }
     } else {
         return { x: currX-1, y: currY }
     }
+};
+
+// TODO check proper status
+var isUnusedCoord = function(x, y, statusGrid) {
+    return statusGrid[x][y] === 'UNKNOWN';
 };
