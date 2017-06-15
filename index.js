@@ -2,7 +2,7 @@ var express = require('express');
 var range = require('lodash/range');
 var app = express();
 
-app.use('/index.html', express.static(__dirname + '/index.html'));
+app.use('/', express.static(__dirname + '/index.html'));
 
 // function initShootingHistory() {
 //     var a = new Array(10);
@@ -30,9 +30,9 @@ var NU = null;
 
 var CA = 2;
 var BA = 3;
-var CR = 3;
-var SU = 3;
-var DE = 2;
+var CR = 4;
+var SU = 5;
+var DE = 6;
 
 
 var initialPlayerGrid = [
