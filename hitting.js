@@ -23,17 +23,49 @@ require('randomizer');
 //     }
 // };
 
+var strategy = {
+    currentTargetShip: 0,
+    currentHits: [],
+    currentDirection: 'UP' // TODO fix better
+};
+
+var registerHit = function(target, strategy) {
+    strategy.currentHits.push(previousMove.target);
+};
+
+var registerNewTargetShip = function(hittingMove, strategy) {
+    strategy.currentTargetShip = hittingMove.ship;
+};
+
 // return the target for next move
-var nextMove = function(previousMove, grid) {
+var nextMove = function(previousMove, grid, strategy) {
     switch(previousMove.event) {
         case 'MISS':
             return getRandomCoord();
             break;
         case 'HIT':
-            return nextClockwiseCoord(previousMove.target);
+            if (strategy.currentHits.empty()) {
+                strategy.currentHits.push(previousMove.target);
+                return nextClockwiseCoord(previousMove.target, grid);
+            } else {
+                return nextClockwiseCoord(previousMove.target, grid);
+            }
             break;
         case 'SUNK':
             return getRandomCoord();
+            break;
+    }
+};
+
+var nextTargetCoord = function(previousHitCoord, strategy) {
+    switch(strategy.currentDirection) {
+        case 'UP':
+            break;
+        case 'RIGHT':
+            break;
+        case 'DOWN':
+            break;
+        case 'LEFT':
             break;
     }
 };
@@ -42,12 +74,16 @@ var nextMove = function(previousMove, grid) {
 var nextClockwiseCoord = function(currentCoord, statusGrid) {
     var currX = currentCoord.x;
     var currY = currentCoord.y;
-    if (currY > 0 && isUnusedCoord(currX, currY-1)) {
+    // try one above
+    if (currY > 0 && isUnusedCoord(currX, currY-1, statusGrid)) {
         return { x: currX, y: currY-1 }
-    } else if (currX < 9 && isUnusedCoord(currX+1, currY)) {
+    // try right
+    } else if (currX < 9 && isUnusedCoord(currX+1, currY, statusGrid)) {
         return { x: currX+1, y: currY }
-    } else if (currY < 9 && isUnusedCoord(currX, currY+1)) {
+    // try left
+    } else if (currY < 9 && isUnusedCoord(currX, currY+1, statusGrid)) {
         return { x: currX, y: currY+1 }
+    // only bottom left
     } else {
         return { x: currX-1, y: currY }
     }
@@ -57,3 +93,7 @@ var nextClockwiseCoord = function(currentCoord, statusGrid) {
 var isUnusedCoord = function(x, y, statusGrid) {
     return statusGrid[x][y] === 'UNKNOWN';
 };
+
+var isWithinGrid = function(x, y) {
+    return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+}
