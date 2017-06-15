@@ -27,13 +27,13 @@ require('randomizer');
 var nextMove = function(previousMove, grid) {
     switch(previousMove.event) {
         case 'MISS':
-            return getRandomField();
+            return getRandomCoord();
             break;
         case 'HIT':
             return nextClockwiseCoord(previousMove.target);
             break;
         case 'SUNK':
-            return getRandomField();
+            return getRandomCoord();
             break;
     }
 };
