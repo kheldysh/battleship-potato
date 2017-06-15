@@ -1,3 +1,4 @@
+require('hitting');
 var express = require('express');
 var range = require('lodash/range');
 var app = express();
@@ -81,8 +82,10 @@ app.get('/start_game', function (req, res) {
 });
 
 app.put('/next_turn', function (req, res) {
-
-    // res.json({ nextTurn: 1 });
+    var ourPrevMove = req.report.you;
+    var enemyMove = req.report.enemy;
+    var nextMove = nextMove(ourPrevMove);
+    res.json(nextMove);
 });
 
 app.delete('/end_game', function (req, res) {
