@@ -21,10 +21,6 @@ var playerGrid;
 var enemyGrid;
 var MI = 0;
 var HI = 1;
-var row = [null, null, null, null, null];
-// var initialGrid = [].concat(row).map(function() {
-//     return [].concat(row);
-// });
 
 var NU = null;
 
@@ -60,16 +56,6 @@ var initialEnemyGrid = [
     [NU, NU, NU, NU, NU, NU, NU, NU, NU, DE],
     [NU, NU, NU, NU, NU, NU, NU, NU, NU, DE]
 ];
-
-
-
-// var ships = {
-//   carrier: 5,
-//   battleship: 4,
-//   cruiser: 3,
-//   submarine: 3,
-//   destroyer: 2
-// };
 
 app.get('/start_game', function (req, res) {
     playerGrid = initialPlayerGrid;
