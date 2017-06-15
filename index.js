@@ -82,10 +82,10 @@ app.get('/start_game', function (req, res) {
 });
 
 app.put('/next_turn', function (req, res) {
+
     var ourPrevMove = req.report.you;
     var enemyMove = req.report.enemy;
-    var nextMove = nextMove(ourPrevMove);
-    res.json(nextMove);
+    var nextMove = nextMove(ourPrevMove); res.json(nextMove);
 });
 
 app.delete('/end_game', function (req, res) {
