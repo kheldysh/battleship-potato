@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/kheldysh/battleship-potato/issues"
   },
-  "homepage": "https://github.com/kheldysh/battleship-potato#readme"
+  "homepage": "https://github.com/kheldysh/battleship-potato#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
 }
